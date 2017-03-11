@@ -8,10 +8,18 @@ app.get('/', function(req, res) {
 });
 
 app.get('/historical', function(req, res) {
+	var today = (new Date()).toISOString().split('T')[0]
+
+	var symbols = req.query.symbols;
+	var from = req.query.from || '2001-01-01';
+	var to = req.query.to || today;
+
+	if(!symbols) return res.status(404).json({ error: 'symbols is required' })
+
 	googleFinance.historical({
-		symbols: ['AAPL', 'XOM'],
-		from: '2014-01-01',
-		to: '2014-01-31'
+		symbols: symbols.split(','),
+		from: from,
+		to: to
 	}, function(err, data) {
 		if(err) return res.status(500).json({ error: err });
 		res.json(data);
