@@ -8,6 +8,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/historical', function(req, res) {
+	res.set("Access-Control-Allow-Origin", "*");
+
 	var today = (new Date()).toISOString().split('T')[0]
 
 	var symbols = req.query.symbols;
